@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORANGEALLRIGHT - ส้มท่าข่อย</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* --- ตั้งค่าพื้นฐาน --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Prompt', sans-serif;
+            background-color: #f3eed9;
+            color: #0f4c3a;
+        }
+
+        header {
+            background-color: #74b48e;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff8e1;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            font-family: cursive;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        nav a.active {
+            background-color: #1a6b4b;
+            color: white;
+            border: 1px solid #fff;
+        }
+
+        nav a:hover:not(.active) {
+            color: white;
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 20px;
+            cursor: pointer;
+            margin-left: 20px;
+        }
+
+        .hamburger span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: white;
+            border-radius: 2px;
+        }
+
+        .right-menu {
+            display: flex;
+            align-items: center;
+        }
+
+        /* --- ส่วนเนื้อหา (Content) --- */
+        .main-content {
+            text-align: center;
+            padding: 80px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 50px;
+            color: #1a6b4b;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+        /* ================= ตกแต่งส่วน PRODUCT ================= */
+        .product-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 20px 80px 20px;
+        }
+
+        .product-header h2 {
+            color: #f08144; /* สีส้มตามแบบ */
+            font-size: 32px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        /* ใช้ไอคอนส้มแทนตัว O */
+        .orange-icon {
+            font-size: 36px;
+            margin: 0 -2px; 
+        }
+
+       /* ================= ส่วน container หลัก ================= */
+        .product-container {
+            max-width: 1400px; /* ขยายความกว้างหน้าเว็บให้ใหญ่ขึ้น */
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* หัวข้อส่วนสินค้า (คุณสามารถใส่ชื่อ "PRODUCT" จริงๆ ได้ตรงนี้) */
+        .section-header {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .section-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #f08144; /* สีส้มตามแบบ */
+        }
+
+        /* ================= การจัดวาง Grid สินค้า ================= */
+        .product-grid {
+            display: grid;
+            /* ปรับจำนวนคอลัมน์ตามความกว้างหน้าจอ (Responsive) */
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* ปรับ minmax ให้ใหญ่ขึ้นเพื่อให้กล่องใหญ่ */
+            gap: 25px; /* ระยะห่างระหว่างกล่องสินค้า */
+        }
+
+        /* ================= สไตล์ของการ์ดสินค้าแต่ละใบ ================= */
+       .product-card {
+            background-color: white; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); 
+            overflow: hidden; 
+            display: flex;
+            flex-direction: column; 
+            transition: transform 0.3s ease, box-shadow 0.3s ease; 
+            position: relative;
+            cursor: pointer;
+            height: 100%; /* <--- เพิ่มคำสั่งนี้ เพื่อให้การ์ดสูงเต็มช่องเสมอ */
+        }
+
+        /* 2. บังคับกรอบรูปภาพไม่ให้หดตัวเด็ดขาด */
+        .product-image-container {
+            width: 100%;
+            aspect-ratio: 1 / 1; /* <--- ลองใช้ 1/1 (จัตุรัส) หรือ 4/5 (แนวตั้งนิดๆ) ดูครับ */
+            background-color: #eee; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #aaa;
+            font-size: 14px;
+            position: relative;
+            flex-shrink: 0; /* <--- เพิ่มคำสั่งนี้! สั่งห้ามกรอบรูปหดตัวเด็ดขาด */
+        }
+
+        /* จัดทรงรูปภาพจริงให้พอดีกับกรอบ */
+        .real-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* <--- <--- คุณสมบัติสำคัญที่จะทำให้รูปภาพขยายจนเต็มกรอบแต่รักษาสัดส่วนไว้ */
+        }
+
+        /* จัดแต่งเอฟเฟกต์คลุมดำตอน Hover ใหม่ให้คลุมเฉพาะรูปภาพ */
+        .product-image-container::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3); /* สีดำที่ความโปร่งใส 30% */
+            opacity: 0; 
+            transition: opacity 0.3s ease; 
+            pointer-events: none; 
+        }
+
+        /* สั่งให้คลุมดำโผล่ขึ้นมา เมื่อเอาเมาส์วางที่การ์ด */
+        .product-card:hover .product-image-container::after {
+            opacity: 1;
+        }
+        /* ================= โครงสร้าง Skeleton Placeholders ================= */
+        /* ข้อแนะนำ: คุณสามารถใช้คลาสเหล่านี้เพื่อใส่เนื้อหาจริงได้เลย */
+        
+        /* 1. ส่วนหัวการ์ด (สำหรับ Badges หรือโปรโมชั่น) */
+        .card-header-skeleton {
+            height: 40px;
+            padding: 10px 15px 0 15px;
+            display: flex;
+            justify-content: flex-end; /* จัดป้ายลดราคาไว้ทางขวา */
+        }
+        
+        .badge-skeleton {
+            width: 60px;
+            height: 20px;
+            background-color: #ddd; /* สีตัวอย่างโครงร่าง */
+            border-radius: 5px;
+        }
+
+        /* 2. ส่วนรูปภาพสินค้า */
+        .card-image-skeleton {
+            width: 100%;
+            height: auto;
+            flex-grow: 1; /* ให้ส่วนรูปขยายเต็มที่ */
+            background-color: #eee; /* สีโครงร่างของรูป */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        /* 3. ส่วนรายละเอียดสินค้า */
+        .card-body-skeleton {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* ระยะห่างระหว่างข้อความโครงร่าง */
+        }
+        
+        .title-skeleton {
+            height: 20px;
+            background-color: #ddd;
+            border-radius: 4px;
+            width: 80%;
+        }
+        
+        .text-skeleton {
+            height: 14px;
+            background-color: #eee;
+            border-radius: 4px;
+            width: 100%;
+        }
+        
+        .spec-skeleton {
+            height: 14px;
+            background-color: #eee;
+            border-radius: 4px;
+            width: 60%;
+        }
+
+        /* 4. ส่วนราคา */
+        .card-footer-skeleton {
+            padding: 0 15px 15px 15px;
+            margin-top: auto; /* ดันราคาไปอยู่ล่างสุด */
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        
+        .price-current-skeleton {
+            width: 80px;
+            height: 24px;
+            background-color: #f08144; /* ใช้สีส้มเพื่อให้เด่นเหมือนราคาจริง */
+            border-radius: 4px;
+        }
+        
+        .price-old-skeleton {
+            width: 60px;
+            height: 16px;
+            background-color: #ddd;
+            border-radius: 4px;
+        }
+        /* จัดทรงรูปภาพจริงให้พอดีกับกล่อง */
+        .real-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* บังคับให้รูปซูมเต็มกรอบพอดีโดยที่สัดส่วนไม่เพี้ยน */
+        }
+        
+        /* เอาสีเทาที่เป็นโครงร่างออกเมื่อมีรูปจริง */
+        .card-image-skeleton:has(.real-image) {
+            background-color: transparent; 
+        }
+        /* 1. เปลี่ยนเมาส์เป็นรูปนิ้วชี้ (มือ) เมื่อวางบนการ์ด */
+        .product-card {
+            cursor: pointer;
+        }
+
+        /* 2. ตั้งค่ากรอบรูปให้พร้อมรับม่านคลุมดำ */
+        .card-image-skeleton {
+            position: relative; /* สำคัญมาก เพื่อไม่ให้ม่านดำทะลุออกไปนอกรูป */
+        }
+
+        /* 3. สร้างม่านคลุมดำ (ซ่อนไว้ก่อน) */
+        .card-image-skeleton::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3); /* สีดำที่ความโปร่งใส 30% (แก้เลข 0.3 ได้) */
+            opacity: 0; /* มองไม่เห็นในตอนแรก */
+            transition: opacity 0.3s ease; /* ตั้งค่าให้ค่อยๆ เฟดมาแบบนุ่มนวล */
+            pointer-events: none; /* ป้องกันไม่ให้ม่านดำไปขวางการกดคลิก */
+        }
+
+        /* 4. สั่งให้ม่านดำโผล่ขึ้นมา เมื่อเอาเมาส์วางที่การ์ด */
+        .product-card:hover .card-image-skeleton::after {
+            opacity: 1;
+        }
+        /* ================= ตกแต่งป้าย Badge ================= */
+        .product-badge {
+            position: absolute; /* สั่งให้ลอยทับรูปได้ */
+            top: 12px;          /* ระยะห่างจากขอบบน */
+            left: 12px;         /* ระยะห่างจากขอบซ้าย (ถ้าอยากให้อยู่ขวา ให้เปลี่ยนเป็น right: 12px;) */
+            background-color: #e32636; /* สีแดงสด */
+            color: white;       /* ตัวหนังสือสีขาว */
+            padding: 4px 10px;  /* ความกว้างของกรอบป้าย */
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 4px; /* มุมมนนิดๆ */
+            z-index: 10;        /* บังคับให้อยู่ชั้นบนสุด จะได้ไม่โดนม่านดำบังตอนเอาเมาส์วาง */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* ใส่เงาให้ป้ายดูมีมิติ */
+        }
+        /* สร้างจังหวะการสั่น */
+        @keyframes wiggle-animation {
+            0%, 7% { transform: rotate(0); }
+            15% { transform: rotate(-10deg); }
+            20% { transform: rotate(8deg); }
+            25% { transform: rotate(-8deg); }
+            30% { transform: rotate(4deg); }
+            35%, 100% { transform: rotate(0); }
+        }
+
+        /* นำจังหวะมาใส่ให้ป้ายของเรา */
+        .product-badge.wiggle {
+            animation: wiggle-animation 2s infinite; /* เล่นวนไปเรื่อยๆ รอบละ 2 วินาที */
+            transform-origin: center; /* ให้จุดหมุนอยู่ตรงกลางป้าย */
+        }
+        /* ตกแต่งข้อความส่วนหัวการ์ด */
+        .header-text {
+            font-size: 13px;
+            color: #777; /* สีเทาเข้ม อ่านง่ายแต่ไม่แย่งซีนชื่อสินค้า */
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* ปรับปรุงกล่อง header เดิมนิดหน่อย */
+        .card-header-skeleton {
+            /* เปลี่ยนจากจัดชิดขวา (flex-end) เป็นชิดซ้าย (flex-start) */
+            display: flex;
+            justify-content: flex-start; 
+            align-items: center;
+            padding: 12px 15px 8px 15px; 
+            height: auto; /* ให้ความสูงปรับตามขนาดตัวหนังสืออัตโนมัติ */
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+             🍊RANGEALLRIGHT
+        </div>
+        <div class="right-menu">
+            <nav>
+                <a href="index.html">HOME</a>
+                <a href="Products.html" class="active">PRODUCT</a>
+                <a href="#">ABOUT US</a>
+                <a href="#">CONTACT</a>
+            </nav>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+<section class="product-section">
+
+    <div class="product-container">
+        
+        <div class="section-header">
+            <div class="section-title">สินค้าทั้งหมด</div>
+            </div>
+
+        <div class="product-grid">
+            
+            <div class="product-card">
+                
+                
+                <div class="product-image-container">
+                    <span class="product-badge wiggle">NEW PRODUCT</span>
+                    <img src="407388772_2022834488102421_1867267998516400074_n.jpg"  class="real-image">
+                </div>
+                
+                <div class="card-body-skeleton">
+                    <div class="title-skeleton"></div>
+                    <div class="text-skeleton"></div>
+                    <div class="spec-skeleton"></div>
+                </div>
+                
+                <div class="card-footer-skeleton">
+                    <div class="price-old-skeleton"></div>
+                    <div class="price-current-skeleton"></div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-header-skeleton">
+                    <div class="badge-skeleton"></div>
+                </div>
+                <div class="card-image-skeleton">
+                    (รูปสินค้า)
+                </div>
+                <div class="card-body-skeleton">
+                    <div class="title-skeleton"></div>
+                    <div class="text-skeleton"></div>
+                    <div class="spec-skeleton"></div>
+                </div>
+                <div class="card-footer-skeleton">
+                    <div class="price-old-skeleton"></div>
+                    <div class="price-current-skeleton"></div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-header-skeleton">
+                    <div class="badge-skeleton"></div>
+                </div>
+                <div class="card-image-skeleton">
+                    (รูปสินค้า)
+                </div>
+                <div class="card-body-skeleton">
+                    <div class="title-skeleton"></div>
+                    <div class="text-skeleton"></div>
+                    <div class="spec-skeleton"></div>
+                </div>
+                <div class="card-footer-skeleton">
+                    <div class="price-old-skeleton"></div>
+                    <div class="price-current-skeleton"></div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="card-header-skeleton">
+                    <span class="header-text">แอ๊คจัดเลย</span>
+                </div>
+                <div class="card-image-skeleton">
+                    <span class="product-badge wiggle">NOT FOR SALE</span>
+                    <img src="81.png"  class="real-image">
+                </div>
+                <div class="card-body-skeleton">
+                    <div class="title-skeleton"></div>
+                    <div class="text-skeleton"></div>
+                    <div class="spec-skeleton"></div>
+                </div>
+                <div class="card-footer-skeleton">
+                    <div class="price-old-skeleton"></div>
+                    <div class="price-current-skeleton"></div>
+                </div></div>
+            
+                   <div class="product-card">
+                <div class="card-header-skeleton">
+                    <div class="badge-skeleton"></div>
+                </div>
+                <div class="card-image-skeleton">
+                    (รูปสินค้า)
+                </div>
+                <div class="card-body-skeleton">
+                    <div class="title-skeleton"></div>
+                    <div class="text-skeleton"></div>
+                    <div class="spec-skeleton"></div>
+                </div>
+                <div class="card-footer-skeleton">
+                    <div class="price-old-skeleton"></div>
+                    <div class="price-current-skeleton"></div>
+                </div>
+            </div>
+
+           
+    </div>
+    </section>
+    </body>
+</html>
